@@ -23,7 +23,7 @@ total_sale FLOAT
 
 -- Importing the data
 -- Change tha path to your downloaded dataset path
-LOAD DATA LOCAL INFILE '/media/abanoub/Storage/My-Github/Retail-Sales-Analysis-SQL/Dataset/SQL-Retail-Sales-Analysis_utf.csv'
+LOAD DATA LOCAL INFILE '/media/abanoub/Storage/My-Github/Retail-Sales-Analysis/Dataset/SQL-Retail-Sales-Analysis_utf.csv'
 INTO TABLE retail_sales
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
@@ -88,14 +88,79 @@ WHERE category = 'Clothing'
 	AND DATE_FORMAT(sale_date, '%Y-%m') = '2022-11'
 	AND quantity >= 4;
 
--- 3- 
+-- 3- Total sales And orders for each category
+
+SELECT 
+	Category,
+	SUM(total_sale) AS Total_Sales,
+	COUNT(*) AS Total_Orders
+FROM retail_sales
+GROUP BY Category;
+	
+
+-- 4- Average age of customers who purchased from beauty category
+
+SELECT 
+	ROUND(AVG(age), 2) AS Average_Age
+FROM retail_sales
+WHERE Category = 'Beauty';
 
 
+-- 5- Transactions where sales > 1000
+
+SELECT 
+	*
+FROM retail_sales
+WHERE total_sale > 1000;
 
 
+-- 6- Transactions made by each gender in each category
+
+SELECT 
+	COUNT(transaction_id) AS Number_of_transactions,
+	Category,
+	gender
+FROM retail_sales
+GROUP BY Category, gender
+ORDER BY 1 DESC;
 
 
+-- 7- Best selling month in each year
 
+SELECT *
+FROM
+(
+	SELECT
+		EXTRACT(YEAR FROM sale_date) AS year,
+		EXTRACT(MONTH FROM sale_date) AS month,
+		AVG(total_sale) AS avg_sale,
+		RANK() OVER(PARTITION BY EXTRACT(YEAR FROM sale_date) ORDER BY AVG(total_sale) DESC) AS rnk
+	FROM retail_sales
+	GROUP BY 1, 2
+) t1
+WHERE rnk = 1;
+
+
+-- 8- Top 5 based on highest total sales
+
+SELECT
+	customer_id,
+	SUM(total_sale) AS Total_Sales
+FROM retail_sales
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 5;
+
+
+-- 9- Number of unique customer who purchase from each category
+
+SELECT 
+	category,
+	COUNT(DISTINCT customer_id) AS Number_of_customers
+FROM retail_sales
+GROUP BY category;
+
+-- 10- 
 
 
 
