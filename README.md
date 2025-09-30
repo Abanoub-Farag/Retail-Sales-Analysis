@@ -60,4 +60,17 @@ The goal is to explore the data, clean it, and extract useful business insights 
 1. Clone the repository:  
    ```bash
    git clone https://github.com/Abanoub-Farag/Retail-Sales-Analysis.git
-
+2. Open DBeaver and connect to your MySQL server
+3. Open the file retail_sales_analysis.sql from the cloned repository inside DBeaver
+4. Before running the script, update the file path in the line:
+LOAD DATA LOCAL INFILE '/your/local/path/SQL-Retail-Sales-Analysis_utf.csv'
+INTO TABLE retail_sales
+...
+Replace /your/local/path/... with the actual path of the dataset on your machine.
+5. Execute the script. It will:
+- Create the database sql_project
+- Create the table retail_sales
+- Import the dataset
+- Run all the analysis queries
+6. View the results directly in DBeaver’s Results tab
+7. (Optional) Modify the queries to perform your own analysis.

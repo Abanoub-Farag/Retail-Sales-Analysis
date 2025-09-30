@@ -160,7 +160,6 @@ SELECT
 FROM retail_sales
 GROUP BY category;
 
--- 10- 
 
 
 
